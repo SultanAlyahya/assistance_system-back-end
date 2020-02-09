@@ -9,7 +9,7 @@ router.post('/volunteer', async(req, res)=>{
         await newVolunterr.save()
         res.status(201).send(newVolunterr)
     }catch(error){
-        res.status(500).send(error)
+        res.status(500).send({error:'the is a problem'})
     }
 })
 
