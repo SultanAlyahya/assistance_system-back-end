@@ -13,7 +13,7 @@ router.post('/volunteer', async(req, res)=>{
     }
 })
 
-router.get('/volunteer', (req, res)=>{
+router.get('/volunteer', async(req, res)=>{
     const v =await volunteer.find({})
     
     res.send(v)
