@@ -13,8 +13,10 @@ router.post('/volunteer', async(req, res)=>{
     }
 })
 
-router.get('/', (req, res)=>{
-    res.send({name:'sultan'})
+router.get('/volunteer', (req, res)=>{
+    const v =await volunteer.find({})
+    
+    res.send(v)
 })
 
 module.exports = router
