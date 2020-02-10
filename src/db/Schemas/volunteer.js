@@ -31,7 +31,7 @@ volunteerSchema.methods.hash=async function(req, res, next){
 
 volunteerSchema.pre('save', function(){
     const volunteer = this
-    volunteer.password = bcrypt.hash(volunteer.password, 2)
+    volunteer.password = await bcrypt.hash(volunteer.password, 2)
     console,log(volunteer.password)
 
 })
