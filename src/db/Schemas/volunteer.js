@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 var validator = require('validator');
+const bcrypt = require('bcrypt')
 
 const volunteerSchema = mongoose.Schema({
     email:{
@@ -21,6 +22,17 @@ const volunteerSchema = mongoose.Schema({
         type:String,
         required:true,
     }
+})
+
+volunteerSchema.methods.hash=async function(req, res, next){
+    
+    volunteer.password = bcrypt.hash(volunteer.password)
+}
+
+volunteerSchema.pre('save', function(){
+    const volunteer = this
+    volunteer.password = bcrypt.hash(volunteer.password, 2)
+    
 })
 
 const volunteer = mongoose.model('volunteer', volunteerSchema)
