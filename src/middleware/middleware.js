@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
 
-const auth = async(req, res, next)=>{
-    
+const authorization = async(req, res, next)=>{
+  
 }
