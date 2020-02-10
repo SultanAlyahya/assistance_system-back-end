@@ -14,9 +14,11 @@ router.post('/volunteer', async(req, res)=>{
 })
 
 router.get('/volunteer', async(req, res)=>{
-    const v =await volunteer.find({})
-    
-    res.send(v)
+    try{
+        const v =await volunteer.find({})
+    }catch(error){
+        res.send(v)
+    }
 })
 
 module.exports = router

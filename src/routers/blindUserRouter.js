@@ -9,7 +9,7 @@ router.post('/User', async(req, res)=>{
         await newBlindUser.save()
         res.status(201).send(newBlindUser)
    }catch(error){
-        res.status(500).send(errer)
+        res.status(500).send(error)
    }
 })
 
