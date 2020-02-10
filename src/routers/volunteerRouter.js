@@ -4,24 +4,27 @@ const volunteer = require('../db/Schemas/volunteer')
 
 const router = express.Router()
 
-router.post('/volunteer', async(req, res)=>{
+router.post('/volunteer/Signup', async(req, res)=>{
     
     const newVolunterr = new volunteer(req.body)
     try{
-        await newVolunterr.save().catch((error)=>{
-            res.send(error)
-        })
+        await newVolunterr.save()
         res.status(201).send(newVolunterr)
     }catch(error){
-        res.status(500).send({error:'the is a problem'})
+        res.status(500).send()
     }
 })
 
-router.get('/volunteer', async(req, res)=>{
+router.post('/volunteer/Login', async(req, res)=>{
     try{
-        const v =await volunteer.find({})
+        const Volunteer = await volunteer.find(req.body)
+        if(Volunteer){
+            res.send(Volunteer)
+        }else{
+            res.status(404).send()
+        }
     }catch(error){
-        res.send(v)
+        res.status(500).send()
     }
 })
 
