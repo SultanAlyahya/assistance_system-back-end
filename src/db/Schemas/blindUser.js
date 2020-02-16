@@ -32,6 +32,7 @@ blindUserSchema.methods.genrateTokens=async function(){
     console.log(token)
     user.token=token
     user.save()
+    return
 }
 
 // blindUser.statics.validateCredentials=async(phoneNumber, password)=>{
