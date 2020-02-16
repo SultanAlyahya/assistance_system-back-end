@@ -29,6 +29,27 @@ volunteerSchema.methods.hash=async function(req, res, next){
     volunteer.password = bcrypt.hash(volunteer.password)
 }
 
+volunteerSchema.statics.isAvailable =async(email)=>{
+    const Volunteer = await volunteer.findOne(email)
+    if(Volunteer){
+        return false
+    }
+    return true
+}
+
+volunteerSchema.statics.validateCredentials=async(email, password)=>{
+    const Volunteer = await volunteer.findOne({email})
+    if(!Volunteer){
+        throw new Error('Unable to login')
+    }
+    const isMatch = await bcrypt.compare(password, Volunteer.password)
+    if(!isMatch){
+        throw new Error('Unable to login')
+    }
+    return Volunteer
+
+}
+
 volunteerSchema.pre('save', async function(next){
     try{
         const volunteer = this
