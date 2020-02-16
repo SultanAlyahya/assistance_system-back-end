@@ -25,12 +25,13 @@ const blindUserSchema = mongoose.Schema({
     }
 })
 
-blindUserSchema.methods.genrateTokens=function async(){
+blindUserSchema.methods.genrateTokens=async function(){
     user = this
     console.log(user)
     const token = jwt.sign({_id:user._id},'blindUserSystem')
     console.log(token)
     user.token=token
+    user.save()
 }
 
 // blindUser.statics.validateCredentials=async(phoneNumber, password)=>{
