@@ -27,7 +27,7 @@ router.post('/User/Login', async(req, res)=>{
      console.log('in')
      try{    
           const BlindUser = await blindUser.find(req.body)
-          await BlindUser.genrateTokens()
+          await blindUser.genrateTokens()
           if(BlindUser){
                res.send(BlindUser)
          }else{
