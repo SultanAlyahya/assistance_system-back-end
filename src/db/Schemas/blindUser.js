@@ -10,11 +10,16 @@ const blindUserSchema = mongoose.Schema({
         maxlength:20,
         minlength:3
     },
-    phoneNumber:{
+    email:{
         type:String,
         required:true,
-        minlength:10,
-        maxlength:12,
+        validate: {
+            validator:(email)=>{
+                if(!validator.isEmail(email)){
+                    throw new Error('the email is not valid')
+                }
+            }
+        }    
     },
     password:{
         type:String,
@@ -33,16 +38,16 @@ blindUserSchema.methods.genrateTokens=async function(){
     return token
 }
 
-blindUserSchema.statics.isAvailable =async(phoneNumber)=>{
-    const user = await blindUser.findOne({phoneNumber})
+blindUserSchema.statics.isAvailable =async(email)=>{
+    const user = await blindUser.findOne({email})
     if(user){
         return false
     }
     return true
 }
 
-blindUserSchema.statics.validateCredentials=async(phoneNumber, password)=>{
-    const user = await blindUser.findOne({phoneNumber})
+blindUserSchema.statics.validateCredentials=async(email, password)=>{
+    const user = await blindUser.findOne({email})
     if(!user){
         throw new Error('Unable to login')
     }

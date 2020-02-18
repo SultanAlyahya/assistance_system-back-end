@@ -10,31 +10,35 @@ const upload = multer({
 const router = express.Router()
 
 router.post('/User/Signup', async(req, res)=>{
-     const isAvailable = await blindUser.isAvailable(req.body.phoneNumber)
+     console.log('in')
+     const isAvailable = await blindUser.isAvailable(req.body.email)
+     console.log(isAvailable)
      if(isAvailable){
           const newBlindUser = new blindUser(req.body)
-          const token = await BlindUser.genrateTokens()
+          const token = await newBlindUser.genrateTokens()
           try{
+               console.log('in2')
                await newBlindUser.save()
+               console.log('in3')
                res.set('token', token)
-               //res.status(201).send(newBlindUser)
+               res.status(201).send(newBlindUser)
           }catch(error){
                res.status(500).send(error.message)
           }
      }else{
-          res.status(501).send({error:"the phone number has been used"})
+          res.status(501).send({error:"the email has been used"})
      }
   })
 
 router.post('/User/Login', async(req, res)=>{
      
      try{    
-          const BlindUser = await blindUser.findOne(req.body) 
+          const BlindUser = await blindUser.validateCredentials(req.body.email, req.body.password)
           if(BlindUser){
                const token = await BlindUser.genrateTokens()
                res.set({'token': token,
                "Accept": "application/json"})
-               res.status(201).send(BlindUser)
+               res.status(200).send(BlindUser)
          }else{
               res.status(404).send()
          }
