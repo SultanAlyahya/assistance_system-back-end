@@ -1,6 +1,7 @@
 const express = require('express')
 const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
+const authorization = require('../middleware/middleware')
 const multer = require('multer')
 const upload = multer({
      dest:'images'
@@ -12,9 +13,11 @@ router.post('/User/Signup', async(req, res)=>{
      const isAvailable = await blindUser.isAvailable(req.body.phoneNumber)
      if(isAvailable){
           const newBlindUser = new blindUser(req.body)
+          const token = await BlindUser.genrateTokens()
           try{
                await newBlindUser.save()
-               res.status(201).send(newBlindUser)
+               res.set('token', token)
+               //res.status(201).send(newBlindUser)
           }catch(error){
                res.status(500).send(error.message)
           }
@@ -24,13 +27,14 @@ router.post('/User/Signup', async(req, res)=>{
   })
 
 router.post('/User/Login', async(req, res)=>{
-     console.log('in')
+     
      try{    
-          const BlindUser = await blindUser.find(req.body)
-          
+          const BlindUser = await blindUser.findOne(req.body) 
           if(BlindUser){
-               await BlindUser.genrateTokens()
-               res.send(BlindUser)
+               const token = await BlindUser.genrateTokens()
+               res.set({'token': token,
+               "Accept": "application/json"})
+               res.status(201).send(BlindUser)
          }else{
               res.status(404).send()
          }
@@ -38,6 +42,18 @@ router.post('/User/Login', async(req, res)=>{
    }catch(error){
         res.status(500).send({"error":error.message})
    }
+})
+
+router.get('/User', authorization, async(req, res)=>{
+     console.log(req.user)
+     res.send()
+})
+
+router.post('/User/Logout', authorization, async(req, res)=>{
+     const user = req.user
+     user.token = ''
+     user.save()
+     res.send('done')
 })
 
 router.post('/User/image',upload.single('photo'), (req, res)=>{

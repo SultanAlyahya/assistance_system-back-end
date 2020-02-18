@@ -25,26 +25,14 @@ const blindUserSchema = mongoose.Schema({
     }
 })
 
-blindUserSchema.methods.genrateTokens=async function genrateTokens(){
+blindUserSchema.methods.genrateTokens=async function(){
     user = this
-    console.log(user)
     const token = jwt.sign({_id:user._id},'blindUserSystem')
-    console.log(token)
     user.token=token
-    user.save()
-    return user
+    await user.save()
+    return token
 }
 
-// blindUser.statics.validateCredentials=async(phoneNumber, password)=>{
-//     const BlindUser = await blindUser.findOne({phoneNumber})
-//     if(!BlindUser){
-//         throw new Error('Unable to login')
-//     }
-//     const isMatch = await bcrypt.compare(password, Volunteer.password)
-//     if(!isMatch){
-//         throw new Error('Unable to login')
-//     }
-//     return Volunteer
 blindUserSchema.statics.isAvailable =async(phoneNumber)=>{
     const user = await blindUser.findOne({phoneNumber})
     if(user){
@@ -69,7 +57,9 @@ blindUserSchema.statics.validateCredentials=async(phoneNumber, password)=>{
 blindUserSchema.pre('save', async function(next){
     try{
         const user = this
-        user.password = await bcrypt.hash(user.password, 2)
+        if(user.isModified('password')){
+            user.password = await bcrypt.hash(user.password, 2)
+        }
         next()
     }catch(error){
 
@@ -77,7 +67,6 @@ blindUserSchema.pre('save', async function(next){
 
 })
 
-// }
 
 const blindUser = mongoose.model('blindUser', blindUserSchema)
 
