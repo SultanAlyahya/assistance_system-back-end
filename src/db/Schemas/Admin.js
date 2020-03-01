@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 var validator = require('validator');
 const bcrypt = require('bcrypt')
 
-const volunteerSchema = mongoose.Schema({
+const adminSchema = mongoose.Schema({
     email:{
         type:String,
         required:true,
@@ -22,29 +22,11 @@ const volunteerSchema = mongoose.Schema({
         type:String,
         required:true,
     },
-    rate:{
-        type:Number,
-        usersRate:{
-            type:Number,
-            user:[{
-                type:mongoose.Types.ObjectId,
-                ref:'User'
-            }]
-        }
-    }
 })
 
 volunteerSchema.methods.hash=async function(req, res, next){
     
     volunteer.password = bcrypt.hash(volunteer.password)
-}
-
-volunteerSchema.statics.isAvailable =async(email)=>{
-    const Volunteer = await volunteer.findOne(email)
-    if(Volunteer){
-        return false
-    }
-    return true
 }
 
 volunteerSchema.statics.validateCredentials=async(email, password)=>{
@@ -72,6 +54,7 @@ volunteerSchema.pre('save', async function(next){
 
 })
 
-const volunteer = mongoose.model('volunteer', volunteerSchema)
+const admin = mongoose.model('admin', adminSchema)
 
-module.exports = volunteer
+module.exports = admin
+

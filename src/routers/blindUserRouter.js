@@ -3,9 +3,55 @@ const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
 const authorization = require('../middleware/middleware')
 const multer = require('multer')
-const upload = multer({
-     dest:'images'
-})
+const fs = require("fs");
+var FormData = require('form-data');
+
+var unirest = require("unirest");
+
+
+const detectText=async(file, res)=>{
+    
+     var request = require('request');
+     var fs = require('fs');
+     var options = {
+       'method': 'POST',
+       'url': 'https://microsoft-azure-microsoft-computer-vision-v1.p.rapidapi.com/ocr',
+       'headers': {
+         'x-rapidapi-host': 'microsoft-azure-microsoft-computer-vision-v1.p.rapidapi.com',
+         'x-rapidapi-key': 'cd030e1ea2msh070cf39ee790c48p13b720jsnf874d7a09567',
+         'Content-Type': 'application/x-www-form-urlencoded'
+       },
+       //fs.createReadStream(file.path)
+       formData: {
+         'form': {
+           'value': file.buffer,
+           'options': {
+             'filename': 'text.png',
+             'contentType': null
+           }
+         }
+       }
+     };
+     
+     request(options,  async(error, response)=> { 
+       if (error) throw new Error(error);
+       var allWords = ""
+       const text = JSON.parse(response.body)
+       text.regions[0].lines.forEach(words=>words.words.forEach(text=>{
+          //console.log(text.text)
+           allWords+=text.text+" "
+       }))
+       console.log(allWords)
+       res.send({text:allWords})
+       
+       //console.log(text.regions[0].lines);
+     });
+     
+     
+}
+
+
+
 
 const router = express.Router()
 
@@ -60,12 +106,24 @@ router.post('/User/Logout', authorization, async(req, res)=>{
      res.send('done')
 })
 
-router.post('/User/image',upload.single('photo'), (req, res)=>{
-     console.log('file', req.files)
-  console.log('body', req.body)
-  res.status(200).send({
-    message: 'success!',
-  })
+const form = multer({
+     //dest:'images',
+     limits:2000000000
+})
+
+router.post('/User/image',form.single('form'), async(req, res)=>{
+    try{
+     console.log(req.file)
+     const text = await detectText(req.file, res)
+     console.log("befor sending: ",text)
+    //res.send(text)
+    }catch(error){
+         console.log(error)
+    res.send(error.message)
+    }
+},(error, req, res, next)=>{
+     console.log(error)
+     res.send(error.message)
 })
 
 router.post('/User/Upload', (req, res)=>{
