@@ -109,7 +109,7 @@ router.post('/User/Logout', authorization, async(req, res)=>{
 
 const form = multer({
      //dest:'images',
-     limits:2000000000
+
 })
 
 router.post('/User/image',form.single('form'), async(req, res)=>{
