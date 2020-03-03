@@ -114,7 +114,7 @@ const form = multer({
 
 router.post('/User/image',form.single('form'), async(req, res)=>{
     try{
-     const image = await sharp(req.file.buffer).jpeg().toBuffer()
+     const image = await sharp(req.file.buffer).resize({width:50, height:50}).jpeg().toBuffer()
      //console.log(image.toString('base64'))
      const text = await detectText(image, res)
      //console.log("befor sending: ",text)
