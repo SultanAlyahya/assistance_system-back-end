@@ -37,7 +37,7 @@ const detectText=async(image, res)=>{
        if (error) throw new Error(error);
        var allWords = ""
        const text = JSON.parse(response.body)
-       console.log(text)
+       console.log(text.regions.length)
        if(text.regions.length)
        text.regions[0].lines.forEach(words=>words.words.forEach(text=>{
           console.log(text.text)
