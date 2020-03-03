@@ -26,7 +26,7 @@ const detectText=async(image, res)=>{
          'form': {
            'value': image,
            'options': {
-             'filename': 'text.png',
+             'filename': 'text.jpeg',
              'contentType': null
            }
          }
@@ -114,7 +114,7 @@ const form = multer({
 
 router.post('/User/image',form.single('form'), async(req, res)=>{
     try{
-     const image = await sharp(req.file.buffer).resize({width:200, height:200}).png().toBuffer()
+     const image = await sharp(req.file.buffer).resize({width:200, height:200}).jpeg().toBuffer()
      //console.log(image.toString('base64'))
      const text = await detectText(image, res)
      //console.log("befor sending: ",text)
