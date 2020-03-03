@@ -43,7 +43,7 @@ const detectText=async(image, res)=>{
            allWords+=text.text+" "
        }))
        console.log(allWords)
-       res.send(text)
+       res.send(allWords)
        
        //console.log(text.regions[0].lines);
      });
