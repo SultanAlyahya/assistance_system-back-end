@@ -38,10 +38,10 @@ const detectText=async(file, res)=>{
        var allWords = ""
        const text = JSON.parse(response.body)
        if(text)
-       text.regions[0].lines.forEach(words=>words.words.forEach(text=>{
+       //text.regions[0].lines.forEach(words=>words.words.forEach(text=>{
           //console.log(text.text)
-           allWords+=text.text+" "
-       }))
+           //allWords+=text.text+" "
+       //}))
        console.log(allWords)
        res.send(text)
        
