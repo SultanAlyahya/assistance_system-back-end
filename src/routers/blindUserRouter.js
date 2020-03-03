@@ -114,10 +114,10 @@ const form = multer({
 
 router.post('/User/image',form.single('form'), async(req, res)=>{
     try{
-        // const image = await sharp(req.file.buffer).resize({width:640, height:320}).png().toBuffer()
-     //console.log(image.toString('base64'))
-     const text = await detectText(req.file.buffer, res)
-     console.log("befor sending: ",text)
+     const image = await sharp(req.file.buffer).resize({width:200, height:200}).png().toBuffer()
+     console.log(image.toString('base64'))
+     //const text = await detectText(image, res)
+     //console.log("befor sending: ",text)
     //res.send(text)
     }catch(error){
          console.log(error)
