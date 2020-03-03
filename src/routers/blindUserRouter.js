@@ -5,11 +5,11 @@ const authorization = require('../middleware/middleware')
 const multer = require('multer')
 const fs = require("fs");
 var FormData = require('form-data');
-
+const sharp = require('sharp');
 var unirest = require("unirest");
 
 
-const detectText=async(file, res)=>{
+const detectText=async(image, res)=>{
     
      var request = require('request');
      var fs = require('fs');
@@ -24,7 +24,7 @@ const detectText=async(file, res)=>{
        //fs.createReadStream(file.path)
        formData: {
          'form': {
-           'value': file.buffer,
+           'value': image,
            'options': {
              'filename': 'text.png',
              'contentType': null
@@ -114,9 +114,10 @@ const form = multer({
 
 router.post('/User/image',form.single('form'), async(req, res)=>{
     try{
-     console.log(req.file)
-     const text = await detectText(req.file, res)
-     console.log("befor sending: ",text)
+         const image = await sharp(req.file.buffer).resize({width:640, height:320}).png().toBuffer()
+     console.log(image.toString('base64'))
+     //const text = await detectText(image, res)
+     //console.log("befor sending: ",text)
     //res.send(text)
     }catch(error){
          console.log(error)
