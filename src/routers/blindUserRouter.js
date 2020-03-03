@@ -37,13 +37,13 @@ const detectText=async(file, res)=>{
        if (error) throw new Error(error);
        var allWords = ""
        const text = JSON.parse(response.body)
-       if(text.regions[0])
+       if(text)
        text.regions[0].lines.forEach(words=>words.words.forEach(text=>{
           //console.log(text.text)
            allWords+=text.text+" "
        }))
        console.log(allWords)
-       res.send(allWords)
+       res.send(text)
        
        //console.log(text.regions[0].lines);
      });
