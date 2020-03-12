@@ -1,7 +1,7 @@
 const express = require('express')
 const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
-const authorization = require('../middleware/middleware')
+const {userAuthorization} = require('../middleware/middleware')
 const multer = require('multer')
 const fs = require("fs");
 var FormData = require('form-data');
@@ -37,12 +37,13 @@ const detectText=async(image, res)=>{
        if (error) throw new Error(error);
        var allWords = ""
        const text = JSON.parse(response.body)
-       console.log(text.regions.length)
-       if(text.regions.length)
+       
+       if(text.regions.length != 0){
        text.regions[0].lines.forEach(words=>words.words.forEach(text=>{
           console.log(text.text)
            allWords+=text.text+" "
        }))
+     }
        console.log(allWords)
        res.send(allWords)
        
@@ -96,12 +97,12 @@ router.post('/User/Login', async(req, res)=>{
    }
 })
 
-router.get('/User', authorization, async(req, res)=>{
+router.get('/User', userAuthorization, async(req, res)=>{
      console.log(req.user)
      res.send()
 })
 
-router.post('/User/Logout', authorization, async(req, res)=>{
+router.post('/User/Logout', userAuthorization, async(req, res)=>{
      const user = req.user
      user.token = ''
      user.save()
@@ -113,7 +114,7 @@ const form = multer({
 
 })
 
-router.post('/User/image',form.single('form'), async(req, res)=>{
+router.post('/User/image', userAuthorization, form.single('form'), async(req, res)=>{
     try{
      const image = await sharp(req.file.buffer).resize({width:50, height:50}).jpeg().toBuffer()
      //console.log(image.toString('base64'))

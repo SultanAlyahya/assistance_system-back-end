@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 var validator = require('validator');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 const volunteerSchema = mongoose.Schema({
     email:{
@@ -14,7 +15,7 @@ const volunteerSchema = mongoose.Schema({
             }
         }    
     },
-    userName:{
+    name:{
         type:String,
         required:true, 
     },
@@ -22,8 +23,17 @@ const volunteerSchema = mongoose.Schema({
         type:String,
         required:true,
     },
+    token:{
+        type:String,
+        
+    },
+    calls:{
+        type:Number,
+        default:0,
+    },
     rate:{
         type:Number,
+        default:0,
         usersRate:{
             type:Number,
             user:[{
@@ -34,10 +44,26 @@ const volunteerSchema = mongoose.Schema({
     }
 })
 
-volunteerSchema.methods.hash=async function(req, res, next){
-    
-    volunteer.password = bcrypt.hash(volunteer.password)
+volunteerSchema.methods.toJSON= function(){
+const user = this
+const userObject = user.toObject()
+
+delete userObject.password
+delete userObject.token
+delete userObject._id
+
+return userObject
+
 }
+
+volunteerSchema.methods.genrateTokens=async function(){
+    const Volunteer = this
+    const token = jwt.sign({_id:Volunteer._id},'blindUserSystem')
+    Volunteer.token=token
+    await Volunteer.save()
+    return token
+}
+
 
 volunteerSchema.statics.isAvailable =async(email)=>{
     const Volunteer = await volunteer.findOne(email)
@@ -62,9 +88,10 @@ volunteerSchema.statics.validateCredentials=async(email, password)=>{
 
 volunteerSchema.pre('save', async function(next){
     try{
-        const volunteer = this
-        volunteer.password = await bcrypt.hash(volunteer.password, 2)
-        console,log(volunteer.password)
+        const Volunteer = this
+        if(Volunteer.isModified('password')){
+            Volunteer.password = await bcrypt.hash(Volunteer.password, 2)
+        }
         next()
     }catch(error){
 
