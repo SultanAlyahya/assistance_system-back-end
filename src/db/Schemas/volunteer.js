@@ -34,13 +34,13 @@ const volunteerSchema = mongoose.Schema({
     rate:{
         type:Number,
         default:0,
-        usersRate:{
+        usersRate:[{
             type:Number,
-            user:[{
+            user:{
                 type:mongoose.Types.ObjectId,
                 ref:'User'
-            }]
-        }
+            }
+        }]
     }
 })
 
