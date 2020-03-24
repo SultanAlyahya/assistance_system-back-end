@@ -74,6 +74,7 @@ volunteerSchema.statics.isAvailable =async(email)=>{
 }
 
 volunteerSchema.statics.validateCredentials=async(email, password)=>{
+    console.log(email)
     const Volunteer = await volunteer.findOne({email})
     if(!Volunteer){
         throw new Error('Unable to login')

@@ -2,59 +2,7 @@ const express = require('express')
 const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
 const {userAuthorization} = require('../middleware/middleware')
-const multer = require('multer')
-const fs = require("fs");
-var FormData = require('form-data');
 const sharp = require('sharp');
-var unirest = require("unirest");
-
-
-const detectText=async(image, res)=>{
-    
-     var request = require('request');
-     var fs = require('fs');
-     var options = {
-       'method': 'POST',
-       'url': 'https://microsoft-azure-microsoft-computer-vision-v1.p.rapidapi.com/ocr',
-       'headers': {
-         'x-rapidapi-host': 'microsoft-azure-microsoft-computer-vision-v1.p.rapidapi.com',
-         'x-rapidapi-key': 'cd030e1ea2msh070cf39ee790c48p13b720jsnf874d7a09567',
-         'Content-Type': 'application/x-www-form-urlencoded'
-       },
-       //fs.createReadStream(file.path)
-       formData: {
-         'form': {
-           'value': image,
-           'options': {
-             'filename': 'text.jpeg',
-             'contentType': null
-           }
-         }
-       }
-     };
-     
-     request(options,  async(error, response)=> { 
-       if (error) throw new Error(error);
-       var allWords = {}
-       var linenum=''
-       const text = JSON.parse(response.body)
-       
-       if(text.regions.length != 0){
-       text.regions[0].lines.forEach(words=>{
-          var line=''  
-          words.words.forEach(text=>{
-          console.log(text.text)
-           allWords+=text.text+" "
-       })})
-     }
-       console.log(allWords)
-       res.send(allWords)
-       
-       //console.log(text.regions[0].lines);
-     });
-     
-     
-}
 
 
 
@@ -110,35 +58,6 @@ router.post('/User/Logout', userAuthorization, async(req, res)=>{
      user.token = ''
      user.save()
      res.send('done')
-})
-
-const form = multer({
-     //dest:'images',
-
-})
-
-router.post('/User/image', userAuthorization, form.single('form'), async(req, res)=>{
-    try{
-     const image = await sharp(req.file.buffer).resize({width:200, height:200}).jpeg().toBuffer()
-     //console.log(image.toString('base64'))
-     const text = await detectText(image, res)
-     //console.log("befor sending: ",text)
-    //res.send(text)
-    }catch(error){
-         console.log(error)
-    res.send(error.message)
-    }
-},(error, req, res, next)=>{
-     console.log(error)
-     res.send(error.message)
-})
-
-router.post('/User/Upload', (req, res)=>{
-     try{
-          
-     }catch(error){
-
-     }
 })
 
 module.exports = router
