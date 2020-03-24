@@ -23,6 +23,7 @@ router.get('/volunteer', volunteerAuthorization, async(req, res)=>{
 
 router.post('/volunteer/Signup', async(req, res)=>{
     try{
+        console.log(req.body)
     const isAvailable = await volunteer.isAvailable({email:req.body.email})
     if(isAvailable){
         const Volunteer = new volunteer(req.body)
