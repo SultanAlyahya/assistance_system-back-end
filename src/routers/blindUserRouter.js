@@ -3,7 +3,11 @@ const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
 const {userAuthorization} = require('../middleware/middleware')
 const sharp = require('sharp');
+const { Expo } = require('expo-server-sdk')
 
+const expo = new Expo();
+
+let messages = [];
 
 
 

@@ -42,28 +42,27 @@ router.post('/volunteer/Signup', async(req, res)=>{
 
 router.post('/volunteer/Login', async(req, res)=>{
     
-    console.log(req.body.token)
-    
-    // console.log(req.body)
-    //     try{
-    //         const Volunteer = await volunteer.validateCredentials(req.body.email, req.body.password)
-    //         if(Volunteer){
-    //             const token = await Volunteer.genrateTokens()
-    //             res.set({'token': token,
-    //            "Accept": "application/json"})
-    //             res.send(Volunteer)
-    //         }else{
-    //             res.status(404).send()
-    //         }
-    //     }catch(error){
-    //         console.log(error)
-    //         res.status(500).send(error.message)
-    //     }
+    console.log(req.body)
+        try{
+            const Volunteer = await volunteer.validateCredentials(req.body.email, req.body.password)
+            if(Volunteer){
+                const token = await Volunteer.genrateTokens()
+                res.set({'token': token,
+               "Accept": "application/json"})
+                res.send(Volunteer)
+            }else{
+                res.status(404).send()
+            }
+        }catch(error){
+            console.log(error)
+            res.status(500).send(error.message)
+        }
     
 })
 
 router.post('/volunteer/notificationToken',(req, res)=>{
     console.log(req.body.token)
+    res.send()
 })
 
 router.patch('/volunteer', volunteerAuthorization, async(req, res)=>{
