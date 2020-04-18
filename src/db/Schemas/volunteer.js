@@ -29,7 +29,7 @@ const volunteerSchema = mongoose.Schema({
     },
     notificationToken:{
         type:String,
-        require:true,
+        
     },
     enableCalls:{
         type:Boolean,

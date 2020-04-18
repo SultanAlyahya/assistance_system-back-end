@@ -1,9 +1,42 @@
 const express = require('express')
 const volunteer = require('../db/Schemas/volunteer')
 const {volunteerAuthorization} = require('../middleware/middleware')
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../bpas-5ad0d-firebase-adminsdk-rxw9x-6896308850.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://bpas-5ad0d.firebaseio.com"
+  });
 
 
 const router = express.Router()
+
+const noti = ()=>{
+    const messages = [];
+    messages.push({
+      notification: {title: 'hello word', body: 'heeellooo word'},
+      token: "cD3zDDAoSwA:APA91bGijbzFY4cSZUBHmJbXWQvU-ExVb14ndwGKILkizwGBbbqr3ty7anurCPKmQGBswb4oDBVOwWqxNfU4XaKklMAySxZYKpGCYKUHf0C5RB8gzTJa1Qs3YHUtXii0-0CsFxLbv-j2",
+      data: {room:"12345"},
+    });
+    
+    admin.messaging().sendAll(messages)
+      .then((response) => {
+        console.log(response.successCount + ' messages were sent successfully');
+      });
+}
+
+router.get('/noti', async(req, res)=>{
+    try{
+        console.log('in')
+       noti()
+       res.send()
+    }catch(error){
+        res.status(500).send(error.message)
+}
+})
+
 
 
 router.get('/volunteer', volunteerAuthorization, async(req, res)=>{

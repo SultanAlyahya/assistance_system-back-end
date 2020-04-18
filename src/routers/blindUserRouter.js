@@ -3,42 +3,48 @@ const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
 const {userAuthorization} = require('../middleware/middleware')
 const sharp = require('sharp');
-const { Expo } = require('expo-server-sdk')
 const volunteer = require('../db/Schemas/volunteer')
 
-const expo = new Expo();
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../bpas-5ad0d-firebase-adminsdk-rxw9x-6896308850.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://bpas-5ad0d.firebaseio.com"
+  });
 
 
 
 const router = express.Router()
+
+
 router.post('/User/notifications', async(req, res)=>{
      const messages = [];
-     const volunteers = await volunteer.find({enableCalls:true})
-     console.log(volunteers)
-     volunteers.forEach(Volunteer => {
-          
-          if (!Expo.isExpoPushToken(Volunteer.notificationToken)) {
-               console.error(`Push token ${pushToken} is not a valid Expo push token`);
-               return;
-             }
-      
-          messages.push({
-               to: Volunteer.notificationToken,
-               sound: 'default',
-               body: 'This is a test notification',
-               data: { withSome: 'data' },
-          })
-     })
      try{
-          const chunks = expo.chunkPushNotifications(messages);
-          (async () => {
-               chunks.forEach(async(chunk) => {
-                    const ticketChunk=await expo.sendPushNotificationsAsync(chunk);
-                    console.log(ticketChunk)
-               })   
+          const volunteers = await volunteer.find({enableCalls:true})
+          console.log(volunteers)
+          volunteers.forEach(Volunteer => {
+               if(Volunteer.notificationToken){
+               messages.push({
+                    notification: {title: 'call received', body: 'you received call for help'},
+                    token: Volunteer.notificationToken,
+                    data: {room:req.body.room},
+               });
+               }
           })
+          admin.messaging().sendAll(messages)
+          .then((response) => {
+          console.log(response.successCount + ' messages were sent successfully');
+          res.send()
+          });
+          //console.log(messages)
+
+          
+          
      }catch(error){
           console.log(error)
+          res.status(500).send()
      }
      })
 
