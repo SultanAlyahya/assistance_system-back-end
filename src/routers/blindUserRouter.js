@@ -24,7 +24,7 @@ router.post('/User/notifications', userAuthorization, async(req, res)=>{
      const user = req.user
      try{
           const volunteers = await volunteer.find({enableCalls:true})
-          user.call.room=req.body.room
+          user.room=req.body.room
           user.save()
           console.log(user)
           volunteers.forEach(Volunteer => {

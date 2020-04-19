@@ -28,18 +28,18 @@ const blindUserSchema = mongoose.Schema({
     token:{
         type:String,
     },
-    call:{
-        room:{
-            type:String,
-        },
-        available:{
-            type:Boolean,
-            default:true
-        },
-        volunteerID:{
-            type:String
-        }
+    
+    room:{
+        type:String,
+    },
+    available:{
+        type:Boolean,
+        default:true
+    },
+    volunteerID:{
+        type:String
     }
+    
 })
 
 blindUserSchema.methods.genrateTokens=async function(){
