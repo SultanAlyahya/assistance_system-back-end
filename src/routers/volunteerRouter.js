@@ -36,12 +36,21 @@ router.get('/volunteer', volunteerAuthorization, async(req, res)=>{
 router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
     try{
-        console.log('room',req.body.room )
+        //console.log('room',req.body.room )
         const user =await  blindUser.findOne({room:req.body.room})
-        console.log('user',user)
-        res.send({available:true})
+        if(user.available){
+            console.log('user',user)
+            user.available=false
+            user.volunteerID=Volunteer._id
+            user.save
+            console.log('user',user)
+            res.send({available:true})
+        }else{
+            res.send({available:false})
+        }
     }catch(error){
-
+        console.log(error)
+        res.send({available:false})
     }
 
 })
