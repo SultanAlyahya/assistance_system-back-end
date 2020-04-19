@@ -82,6 +82,7 @@ router.post('/volunteer/Login', async(req, res)=>{
         try{
             const Volunteer = await volunteer.validateCredentials(req.body.email, req.body.password)
             if(Volunteer){
+                Volunteer.notificationToken = req.body.notificationToken
                 const token = await Volunteer.genrateTokens()
                 res.set({'token': token,
                "Accept": "application/json"})
