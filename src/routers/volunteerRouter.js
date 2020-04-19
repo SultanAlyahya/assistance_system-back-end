@@ -1,6 +1,7 @@
 const express = require('express')
 const volunteer = require('../db/Schemas/volunteer')
 const {volunteerAuthorization} = require('../middleware/middleware')
+const blindUser = require('../db/Schemas/blindUser')
 
 const router = express.Router()
 
@@ -30,6 +31,18 @@ router.get('/volunteer', volunteerAuthorization, async(req, res)=>{
     }catch(error){
         res.status(500).send(error.message)
 }
+})
+
+router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
+    const Volunteer = req.Volunteer
+    try{
+        const user = blindUser.find({room:req.room})
+        console.log(user)
+        res.send({available:true})
+    }catch(error){
+
+    }
+
 })
 
 
