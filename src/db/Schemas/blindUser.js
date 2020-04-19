@@ -27,6 +27,18 @@ const blindUserSchema = mongoose.Schema({
     },
     token:{
         type:String,
+    },
+    call:{
+        room:{
+            type:String,
+        },
+        available:{
+            type:Boolean,
+            default:true
+        },
+        volunteerID:{
+            type:String
+        }
     }
 })
 

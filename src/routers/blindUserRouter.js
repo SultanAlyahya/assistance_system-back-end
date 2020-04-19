@@ -19,11 +19,14 @@ admin.initializeApp({
 const router = express.Router()
 
 
-router.post('/User/notifications', async(req, res)=>{
+router.post('/User/notifications', userAuthorization, async(req, res)=>{
      const messages = [];
+     const user = req.user
      try{
           const volunteers = await volunteer.find({enableCalls:true})
-          console.log(volunteers)
+          user.call.room=req.body.room
+          user.save()
+          console.log(user)
           volunteers.forEach(Volunteer => {
                if(Volunteer.notificationToken){
                messages.push({
