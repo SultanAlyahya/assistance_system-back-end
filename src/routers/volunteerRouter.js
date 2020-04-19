@@ -50,6 +50,7 @@ router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
         }
     }catch(error){
         console.log(error)
+        res.send({available:false})
     }
 
 })
