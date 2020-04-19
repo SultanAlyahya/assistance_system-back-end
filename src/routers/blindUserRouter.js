@@ -24,15 +24,15 @@ router.post('/User/notifications', userAuthorization, async(req, res)=>{
      const user = req.user
      try{
           const volunteers = await volunteer.find({enableCalls:true})
-          console.log('V1', volunteers.length)
-          console.log('V2', volunteers[1])
+          // console.log('V1', volunteers.length)
+          // console.log('V2', volunteers[1])
           user.room=req.body.room
           user.available=true
           await user.save()
           console.log(user)
 
           volunteers.forEach(Volunteer => {
-               //console.log('Volunteer', Volunteer)
+               console.log('Volunteer', Volunteer)
                if(Volunteer.notificationToken){
                messages.push({
                     notification: {title: 'call received', body: 'you received call for help'},
