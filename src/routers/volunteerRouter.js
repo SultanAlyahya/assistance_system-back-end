@@ -37,7 +37,7 @@ router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
     try{
         console.log('room',req.body )
-        const user = blindUser.find({room:req.body.room})
+        const user = blindUser.find({call:{room:req.body.room}})
         console.log('user',user[0])
         res.send({available:true})
     }catch(error){
