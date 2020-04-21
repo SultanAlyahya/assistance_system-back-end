@@ -128,6 +128,7 @@ router.post('rateVolunteer', userAuthorization, async(req, res)=>{
           user.room=''
           user.available=true
           await user.save()
+          console.log(user)
           res.send()
      }catch(error){
           console.log(error)
