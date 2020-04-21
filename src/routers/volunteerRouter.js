@@ -86,7 +86,7 @@ router.post('/volunteer/Login', async(req, res)=>{
                 Volunteer.notificationToken = req.body.notificationToken
                 const token = await Volunteer.genrateTokens()
 
-                const statistics = Volunteer.statistics()
+                const statistics = await Volunteer.statistics()
 
                 res.set({'token': token,
                "Accept": "application/json"})
