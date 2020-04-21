@@ -50,8 +50,8 @@ router.post('/User/notifications', userAuthorization, async(req, res)=>{
           console.log(user)
 
           volunteers.forEach(Volunteer => {
-               console.log('Volunteer', Volunteer)
                if(Volunteer.notificationToken){
+                    console.log('Volunteer', Volunteer)
                messages.push({
                     notification: {title: 'call received', body: 'you received call for help'},
                     token: Volunteer.notificationToken,
