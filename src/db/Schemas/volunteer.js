@@ -39,13 +39,15 @@ const volunteerSchema = mongoose.Schema({
         type:Number,
         default:0,
     },
-    rate:{
-        type:Number,
-        default:0,
-        usersRate:[{
-            type:Number,
-        }]
-    }
+    rating:[{
+        rate:{
+            type:Number
+        },
+        userID:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'blindUser'
+        }
+    }]
 })
 
 volunteerSchema.methods.toJSON= function(){

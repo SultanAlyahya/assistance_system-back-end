@@ -7,16 +7,34 @@ const volunteer = require('../db/Schemas/volunteer')
 
 var admin = require("firebase-admin");
 
-var serviceAccount = require("../bpas-5ad0d-firebase-adminsdk-rxw9x-6896308850.json");
+var serviceAccount = require("../bpas-28773-firebase-adminsdk-c4jik-7652b9aba5.json");
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://bpas-5ad0d.firebaseio.com"
-  });
+     credential: admin.credential.cert(serviceAccount),
+     databaseURL: "https://bpas-28773.firebaseio.com"
+   });
 
 
 
 const router = express.Router()
+
+router.get('/notiTest', async(req, res)=>{
+     var registrationToken = 'ekLgNAwbQ8o:APA91bEdOa8en4YKKod8DlBDSfvScr0670t7tRzv5LXxD-xJeyK1FOfkYEunvRhTgSKj2Sqj34kCEGfRHCHC5-weYcTPrZIORZacSeN5RBceL0wRuwlQyTxwG70Y23eSOzgvm95HOCoK'
+
+     var messages = [];
+     messages.push({
+       notification: {title: 'Price drop', body: '5% off all electronics'},
+       token: registrationToken,
+     });
+     
+     admin.messaging().sendAll(messages)
+       .then((response) => {
+         console.log(response.successCount + ' messages were sent successfully');
+       });
+       res.send()
+    
+})
+
 
 
 router.post('/User/notifications', userAuthorization, async(req, res)=>{
@@ -93,6 +111,13 @@ router.post('/User/Login', async(req, res)=>{
    }catch(error){
         res.status(500).send({"error":error.message})
    }
+})
+
+router.post('rateVolunteer', userAuthorization, async(req, res)=>{
+
+     const user = req.user
+     const Volunteer = await volunteer.findById(user.volunteerID)
+     Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
 })
 
 router.get('/User', userAuthorization, async(req, res)=>{

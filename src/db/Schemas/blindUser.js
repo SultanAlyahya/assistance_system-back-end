@@ -37,7 +37,8 @@ const blindUserSchema = mongoose.Schema({
         default:true
     },
     volunteerID:{
-        type:String
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'volunteer'
     }
     
 })
