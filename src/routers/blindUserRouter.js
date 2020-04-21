@@ -124,7 +124,7 @@ router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
                Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
                await Volunteer.save()
           }
-          user.volunteerID=''
+          delete user.volunteerID
           user.room=''
           user.available=true
           await user.save()
