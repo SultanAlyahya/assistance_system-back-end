@@ -126,7 +126,7 @@ if(available){
 }
 })
 
-router.patch('./volunteer/toggleCalls', volunteerAuthorization, async(req, res)=>{
+router.patch('/volunteer/toggleCalls', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
     try{
         Volunteer.enableCalls = !Volunteer.enableCalls
