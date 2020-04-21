@@ -39,7 +39,7 @@ router.get('/notiTest', async(req, res)=>{
 
 
 
-router.post('/User/notifications', async(req, res)=>{
+router.post('/User/notifications', userAuthorization, async(req, res)=>{
      const messages = [];
      const user = req.user
      try{
