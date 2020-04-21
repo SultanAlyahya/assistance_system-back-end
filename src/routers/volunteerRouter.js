@@ -39,8 +39,8 @@ router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
     try{
         //console.log('room',req.body.room )
         const user =await  blindUser.findOne({room:req.body.room})
+        console.log('user available',user.available)
         if(user.available){
-            console.log('user',user)
             user.available=false
             user.volunteerID=Volunteer._id
             await user.save()
@@ -53,7 +53,7 @@ router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
         }
     }catch(error){
         console.log(error)
-        res.send({available:false})
+        res.status(500).send({available:false})
     }
 
 })
