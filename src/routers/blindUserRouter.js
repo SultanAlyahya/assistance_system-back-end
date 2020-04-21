@@ -21,7 +21,7 @@ admin.initializeApp({
 const router = express.Router()
 
 router.get('/notiTest', async(req, res)=>{
-     var registrationToken = 'f92VmYkl-84:APA91bENYvgwQhAnccYz2L_neKww5rAnFtPbcYU-u4CR1Fq--Lb680rod5dbHWdvaAgeez079PtJZms00vIHuFRAppzLMF6YBCiS9xk0hLNt9uDzKizPpT7EpZKp1F16m2TJ_xQ3onD1'
+     var registrationToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTljNjcxODlmYzcxYTAwMTc1OGViYmEiLCJpYXQiOjE1ODc0NzQ5Nzd9.bLC_28rmTFbfViu5AFNeFYKS6c7Lz2yQCq9RJ1pXTc8'
 
      var messages = [];
      messages.push({
