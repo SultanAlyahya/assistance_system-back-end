@@ -33,6 +33,19 @@ router.get('/volunteer', volunteerAuthorization, async(req, res)=>{
 }
 })
 
+router.get('/volunteer/logout', volunteerAuthorization, async(req, res)=>{
+    Volunteer = req.Volunteer
+    try{
+        Volunteer.token = ''
+        Volunteer.notificationToken = ''
+        await Volunteer.save()
+        res.send()
+    }catch(error){
+        console.log(error)
+        res.status(500).send()
+    }
+})
+
 router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
     console.log(Volunteer)
@@ -130,6 +143,7 @@ router.patch('/volunteer/toggleCalls', volunteerAuthorization, async(req, res)=>
     const Volunteer = req.Volunteer
     try{
         Volunteer.enableCalls = !Volunteer.enableCalls
+        await Volunteer.save()
         res.send()
     }catch(error){
         res.status(500).send()
