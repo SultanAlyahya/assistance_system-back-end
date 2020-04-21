@@ -88,7 +88,7 @@ volunteerSchema.methods.statistics=async function(){
     const call = Volunteer.enableCalls
     const name = Volunteer.name
 
-    return {numerOfVolunteers, numerOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating, call, nmae}
+    return {numerOfVolunteers, numerOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating, call, name}
 }
 
 
