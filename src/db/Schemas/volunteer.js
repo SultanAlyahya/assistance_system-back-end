@@ -73,7 +73,7 @@ volunteerSchema.methods.genrateTokens=async function(){
 
 volunteerSchema.methods.statistics=async function(){
     const Volunteer = this
-    var rating=0.0
+    var rating=0
     if(Volunteer.rating.length != 0){
         Volunteer.rating.forEach(rate => {
             rating+=rate.rate
