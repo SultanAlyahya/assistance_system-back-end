@@ -39,7 +39,7 @@ router.get('/notiTest', async(req, res)=>{
 
 
 
-router.post('/User/notifications', userAuthorization, async(req, res)=>{
+router.post('/User/notifications', async(req, res)=>{
      const messages = [];
      const user = req.user
      try{
@@ -117,10 +117,22 @@ router.post('/User/Login', async(req, res)=>{
 })
 
 router.post('rateVolunteer', userAuthorization, async(req, res)=>{
-
-     const user = req.user
-     const Volunteer = await volunteer.findById(user.volunteerID)
-     Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
+     try{
+          const user = req.user
+          if(req.body.rate){
+               const Volunteer = await volunteer.findById(user.volunteerID)
+               Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
+               await Volunteer.save()
+          }
+          user.volunteerID=''
+          user.room=''
+          user.available=true
+          await user.save()
+          res.send()
+     }catch(error){
+          console.log(error)
+          res.status(500).send()
+     }
 })
 
 router.get('/User', userAuthorization, async(req, res)=>{
