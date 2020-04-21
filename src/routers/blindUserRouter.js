@@ -116,7 +116,7 @@ router.post('/User/Login', async(req, res)=>{
    }
 })
 
-router.post('rateVolunteer', userAuthorization, async(req, res)=>{
+router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
      try{
           const user = req.user
           if(req.body.rate){
