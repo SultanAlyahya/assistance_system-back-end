@@ -5,21 +5,23 @@ const {userAuthorization} = require('../middleware/middleware')
 const sharp = require('sharp');
 const volunteer = require('../db/Schemas/volunteer')
 
+
 var admin = require("firebase-admin");
 
-var serviceAccount = require("../bpas-28773-firebase-adminsdk-c4jik-7652b9aba5.json");
+var serviceAccount = require("../bpas-28773-firebase-adminsdk-c4jik-b11a5030b7.json");
 
 admin.initializeApp({
-     credential: admin.credential.cert(serviceAccount),
-     databaseURL: "https://bpas-28773.firebaseio.com"
-   });
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://bpas-28773.firebaseio.com"
+});
+
 
 
 
 const router = express.Router()
 
 router.get('/notiTest', async(req, res)=>{
-     var registrationToken = 'ekLgNAwbQ8o:APA91bEdOa8en4YKKod8DlBDSfvScr0670t7tRzv5LXxD-xJeyK1FOfkYEunvRhTgSKj2Sqj34kCEGfRHCHC5-weYcTPrZIORZacSeN5RBceL0wRuwlQyTxwG70Y23eSOzgvm95HOCoK'
+     var registrationToken = 'f92VmYkl-84:APA91bENYvgwQhAnccYz2L_neKww5rAnFtPbcYU-u4CR1Fq--Lb680rod5dbHWdvaAgeez079PtJZms00vIHuFRAppzLMF6YBCiS9xk0hLNt9uDzKizPpT7EpZKp1F16m2TJ_xQ3onD1'
 
      var messages = [];
      messages.push({
