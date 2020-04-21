@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 var validator = require('validator');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+const blindUser = require('./blindUser')
 
 const volunteerSchema = mongoose.Schema({
     email:{
@@ -68,6 +69,21 @@ volunteerSchema.methods.genrateTokens=async function(){
     Volunteer.token=token
     await Volunteer.save()
     return token
+}
+
+volunteerSchema.methods.statistics=async function(){
+    const Volunteer = this
+    var rating=0
+    if(Volunteer.rating.length != 0){
+        Volunteer.rating.forEach(rate => {
+            rating+=rate.rate
+        });
+    }
+    const numerOfVolunteers = await volunteer.countDocuments({})
+    const numerOfActiveVolunteers = await volunteer.countDocuments({enableCalls:true})
+    const numberOfCalls = Volunteer.calls
+    const numberOfBlindPeople = await volunteer.countDocuments({enableCalls:true})
+    return {numerOfVolunteers, numerOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating}
 }
 
 
