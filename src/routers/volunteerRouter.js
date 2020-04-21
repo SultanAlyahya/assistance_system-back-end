@@ -108,7 +108,7 @@ router.post('/volunteer/notificationToken',(req, res)=>{
     res.send()
 })
 
-router.patch('/volunteer', volunteerAuthorization, async(req, res)=>{
+router.patch('/volunteer/updateData', volunteerAuthorization, async(req, res)=>{
 try{
     const availableChanges = ['password', 'email', 'name']
 const chnages = Object.keys(req.body)
@@ -124,6 +124,16 @@ if(available){
 }catch(error){
     res.send(error)
 }
+})
+
+router.patch('./volunteer/toggleCalls', volunteerAuthorization, async(req, res)=>{
+    const Volunteer = req.Volunteer
+    try{
+        Volunteer.enableCalls = !Volunteer.enableCalls
+        res.send()
+    }catch(error){
+        res.status(500).send()
+    }
 })
 
 module.exports = router
