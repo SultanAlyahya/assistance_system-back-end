@@ -86,8 +86,9 @@ volunteerSchema.methods.statistics=async function(){
     const numberOfBlindPeople = await blindUser.countDocuments({})
     
     const call = Volunteer.enableCalls
+    const name = Volunteer.name
 
-    return {numerOfVolunteers, numerOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating, call}
+    return {numerOfVolunteers, numerOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating, call, nmae}
 }
 
 
