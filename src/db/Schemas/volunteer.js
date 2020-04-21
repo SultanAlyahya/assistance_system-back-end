@@ -80,15 +80,15 @@ volunteerSchema.methods.statistics=async function(){
         });
         rating=rating/Volunteer.rating.length
     }
-    const numerOfVolunteers = await volunteer.countDocuments({})
-    const numerOfActiveVolunteers = await volunteer.countDocuments({enableCalls:true})
+    const numberOfVolunteers = await volunteer.countDocuments({})
+    const numberOfActiveVolunteers = await volunteer.countDocuments({enableCalls:true})
     const numberOfCalls = Volunteer.calls
     const numberOfBlindPeople = await blindUser.countDocuments({})
     
     const call = Volunteer.enableCalls
     const name = Volunteer.name
 
-    return {numerOfVolunteers, numerOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating, call, name}
+    return {numberOfVolunteers, numberOfActiveVolunteers, numberOfCalls, numberOfBlindPeople, rating, call, name}
 }
 
 
