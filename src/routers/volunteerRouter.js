@@ -44,6 +44,8 @@ router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
             user.available=false
             user.volunteerID=Volunteer._id
             await user.save()
+            Volunteer.calls = Volunteer.calls+1
+            Volunteer.save()
             console.log('user',user)
             res.send({available:true})
         }else{
