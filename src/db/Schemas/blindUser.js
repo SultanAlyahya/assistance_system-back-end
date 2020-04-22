@@ -7,6 +7,8 @@ const blindUserSchema = mongoose.Schema({
     name:{
         type:String,
         required:true,
+        maxlength:20,
+        minlength:3
     },
     email:{
         type:String,
