@@ -134,7 +134,12 @@ router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
           console.log(error)
           res.status(500).send()
      }
-})
+},(err, req, res, next)=> {
+     const user =await  blindUser.findOne({room:req.body.room})
+     user.available=true
+     await user.save()
+     res.send()
+   })
 
 router.get('/User', userAuthorization, async(req, res)=>{
      console.log(req.user)
