@@ -50,7 +50,7 @@ router.post('/volunteer/statistics', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
     try{
         const statistics = await Volunteer.statistics()
-        res.send()
+        res.send(statistics)
     }catch(error){
         console.log(error)
         res.status(500).send()
