@@ -142,7 +142,7 @@ router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
    })
 
    router.get('/User/logout', userAuthorization, async(req, res)=>{
-     user = req.user
+     const user = req.user
      try{
          user.token = ''
          await user.save()
