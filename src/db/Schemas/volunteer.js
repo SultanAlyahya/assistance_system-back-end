@@ -47,7 +47,12 @@ const volunteerSchema = mongoose.Schema({
         userID:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'blindUser'
+        },
+        time:{
+            type: Date,
+            default: Date.now
         }
+        
     }]
 })
 

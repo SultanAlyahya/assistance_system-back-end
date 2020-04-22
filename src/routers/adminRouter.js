@@ -92,6 +92,21 @@ router.get('/Admin/getNumbers', async(req, res)=>{
      }
 })
 
+router.post('/Admin/ban', async(req, res)=>{
+     try{
+          const v= await volunteer.findOneAndDelete({email: req.body.email})
+
+          res.send(v)
+     
+     }catch(error){
+          console.log(error)
+          res.status(500).send()
+     }
+})
+
+          
+
+
 
 
 
