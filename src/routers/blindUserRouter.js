@@ -141,6 +141,18 @@ router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
      res.send()
    })
 
+   router.get('/User/logout', userAuthorization, async(req, res)=>{
+     user = req.user
+     try{
+         user.token = ''
+         await user.save()
+         res.send()
+     }catch(error){
+         console.log(error)
+         res.status(500).send()
+     }
+ })
+
 router.get('/User', userAuthorization, async(req, res)=>{
      console.log(req.user)
      res.send()
