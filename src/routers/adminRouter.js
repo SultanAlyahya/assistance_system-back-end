@@ -53,7 +53,7 @@ router.post('/User/Logout', async(req, res)=>{
      res.send('done')
 })
 
-router.post('/Admin/Volunteer', async(req, res)=>{
+router.get('/Admin/Volunteer', async(req, res)=>{
      try{
           const Volunteers = await volunteer.find({})
           volunteers=[]
