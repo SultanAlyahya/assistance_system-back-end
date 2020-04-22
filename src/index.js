@@ -17,4 +17,4 @@ app.listen(port, ()=>{
     console.log('the server is up')
 })
 
-console.log('done')
+console.log(new Date(Date.now()).toLocaleDateString())
