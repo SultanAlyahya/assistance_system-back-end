@@ -2,6 +2,7 @@ const express = require('express')
 const admin = require('../db/Schemas/Admin')
 const authorization = require('../middleware/middleware')
 const volunteer = require('../db/Schemas/volunteer')
+const blindUser = require('../db/Schemas/blindUser')
 
 
 const router = express.Router()
@@ -76,6 +77,22 @@ router.get('/Admin/Volunteer', async(req, res)=>{
           res.status(500).send()
      }
 })
+
+router.get('/Admin/getNumbers', async(req, res)=>{
+     try{
+          
+          const numberOfVolunteers = await volunteer.countDocuments({})
+          const numberOfBlindPeople = await blindUser.countDocuments({})
+
+          res.send({numberOfVolunteers, numberOfBlindPeople})
+     
+     }catch(error){
+          console.log(error)
+          res.status(500).send()
+     }
+})
+
+
 
 
 
