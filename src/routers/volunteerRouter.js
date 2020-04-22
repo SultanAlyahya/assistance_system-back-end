@@ -46,6 +46,17 @@ router.get('/volunteer/logout', volunteerAuthorization, async(req, res)=>{
     }
 })
 
+router.post('/volunteer/statistics', volunteerAuthorization, async(req, res)=>{
+    const Volunteer = req.Volunteer
+    try{
+        const statistics = await Volunteer.statistics()
+        res.send()
+    }catch(error){
+        console.log(error)
+        res.status(500).send()
+    }
+})
+
 router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
     console.log(Volunteer)
