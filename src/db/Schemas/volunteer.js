@@ -71,6 +71,23 @@ volunteerSchema.methods.genrateTokens=async function(){
     return token
 }
 
+
+volunteerSchema.methods.volunteer= function(){
+    const Volunteer = this
+    var rating=0
+    if(Volunteer.rating.length != 0){
+        Volunteer.rating.forEach(rate => {
+            rating+=rate.rate
+        });
+        rating=rating/Volunteer.rating.length
+    }
+    
+    const name = Volunteer.name
+    const email=Volunteer.email
+    return {email, rating, name}
+}
+
+
 volunteerSchema.methods.statistics=async function(){
     const Volunteer = this
     var rating=0

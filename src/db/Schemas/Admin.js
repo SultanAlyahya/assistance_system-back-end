@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 var validator = require('validator');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 const adminSchema = mongoose.Schema({
     email:{
@@ -14,7 +15,7 @@ const adminSchema = mongoose.Schema({
             }
         }    
     },
-    userName:{
+    name:{
         type:String,
         required:true, 
     },
@@ -22,37 +23,53 @@ const adminSchema = mongoose.Schema({
         type:String,
         required:true,
     },
+    token:{
+        type:String,
+        
+    },
 })
 
-volunteerSchema.methods.hash=async function(req, res, next){
+adminSchema.methods.hash=async function(req, res, next){
     
-    volunteer.password = bcrypt.hash(volunteer.password)
+    admin.password = bcrypt.hash(volunteer.password)
 }
 
-volunteerSchema.statics.validateCredentials=async(email, password)=>{
-    const Volunteer = await volunteer.findOne({email})
-    if(!Volunteer){
+adminSchema.statics.validateCredentials=async(email, password)=>{
+    console.log(email)
+    const Admin = await admin.findOne({email})
+    if(!Admin){
         throw new Error('Unable to login')
     }
-    const isMatch = await bcrypt.compare(password, Volunteer.password)
+    const isMatch = await bcrypt.compare(password, Admin.password)
+    console.log(isMatch)
     if(!isMatch){
         throw new Error('Unable to login')
     }
-    return Volunteer
+    return Admin
 
 }
 
-volunteerSchema.pre('save', async function(next){
+adminSchema.pre('save', async function(next){
     try{
-        const volunteer = this
-        volunteer.password = await bcrypt.hash(volunteer.password, 2)
-        console,log(volunteer.password)
+        const Admin = this
+        Admin.password = await bcrypt.hash(Admin.password, 2)
+        console,log(Admin.password)
         next()
     }catch(error){
 
     }
 
 })
+
+adminSchema.methods.genrateTokens=async function(){
+    const Admin = this
+    const token = jwt.sign({_id:Admin._id},'blindUserSystem')
+    Admin.token=token
+    await Admin.save()
+    return Admin
+}
+
+
 
 const admin = mongoose.model('admin', adminSchema)
 

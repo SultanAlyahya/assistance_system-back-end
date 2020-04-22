@@ -64,6 +64,7 @@ blindUserSchema.statics.validateCredentials=async(email, password)=>{
     if(!user){
         throw new Error('Unable to login')
     }
+    console.log(password)
     const isMatch = await bcrypt.compare(password, user.password)
     if(!isMatch){
         throw new Error('Unable to login')
@@ -74,9 +75,9 @@ blindUserSchema.statics.validateCredentials=async(email, password)=>{
 
 blindUserSchema.pre('save', async function(next){
     try{
-        const user = this
-        if(user.isModified('password')){
-            user.password = await bcrypt.hash(user.password, 2)
+        const Admin = this
+        if(Admin.isModified('password')){
+            Admin.password = await bcrypt.hash(user.password, 2)
         }
         next()
     }catch(error){
