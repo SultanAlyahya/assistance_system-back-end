@@ -17,7 +17,18 @@ router.get('/noti', async(req, res)=>{
 }
 })
 
+router.get('/volunteer/getData', volunteerAuthorization, async(req, res)=>{
+    try{
+       
+        const Volunteer = req.Volunteer
+        const statistics = await Volunteer.statistics()
+        res.send(statistics)
 
+
+    }catch(error){
+        res.status(500).send(error.message)
+}
+})
 
 router.get('/volunteer', volunteerAuthorization, async(req, res)=>{
     try{
@@ -45,6 +56,7 @@ router.get('/volunteer/logout', volunteerAuthorization, async(req, res)=>{
         res.status(500).send()
     }
 })
+
 
 router.post('/volunteer/getCall', volunteerAuthorization, async(req, res)=>{
     const Volunteer = req.Volunteer
@@ -125,6 +137,17 @@ router.post('/volunteer/Login', async(req, res)=>{
             res.status(500).send(error.message)
         }
     
+})
+
+router.get('/volunteer/loginByToken', volunteerAuthorization, async(req, res)=>{
+    try{
+        const Volunteer = req.Volunteer
+        const statistics = await Volunteer.statistics()
+        res.send(statistics)
+    }catch(error){
+        console.log(error)
+        res.status(500).send()
+    }
 })
 
 router.post('/volunteer/notificationToken',(req, res)=>{
