@@ -2,7 +2,6 @@ const express = require('express')
 const blindUser = require('../db/Schemas/blindUser')
 const image = require('../db/Schemas/image')
 const {userAuthorization} = require('../middleware/middleware')
-const sharp = require('sharp');
 const volunteer = require('../db/Schemas/volunteer')
 
 
@@ -21,12 +20,14 @@ admin.initializeApp({
 const router = express.Router()
 
 router.get('/notiTest', async(req, res)=>{
-     var registrationToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTljNjcxODlmYzcxYTAwMTc1OGViYmEiLCJpYXQiOjE1ODc0NzQ5Nzd9.bLC_28rmTFbfViu5AFNeFYKS6c7Lz2yQCq9RJ1pXTc8'
+     var registrationToken = 'd8zvREFQcg8:APA91bFpEmRIbCOhQmXOtF4erxh3RBditFPSZJDma36PEHuVIa6Vx1m-M2zOJgQ5U4PWOqyG1YtzkZV_OLNPhm4j3pW-_dwmFa_gVVHLJoB8jEAYd54QjD8F-0qQ9D3e9coIC9Nzq71l'
 
      var messages = [];
      messages.push({
-       notification: {title: 'Price drop', body: '5% off all electronics'},
-       token: registrationToken,
+          notification: {title: 'call received', body: 'you received call for help'},
+          token: registrationToken,
+          data: {actions: '["Accept","Reject"]'},
+          
      });
      
      admin.messaging().sendAll(messages)
@@ -106,7 +107,7 @@ router.post('/User/Login', async(req, res)=>{
                const token = await BlindUser.genrateTokens()
                res.set({'token': token,
                "Accept": "application/json"})
-               res.status(200).send(BlindUser)
+               res.status(200).send()
          }else{
               res.status(404).send()
          }
@@ -114,6 +115,20 @@ router.post('/User/Login', async(req, res)=>{
    }catch(error){
         res.status(500).send({"error":error.message})
    }
+})
+
+router.get('/User/LoginByToken', userAuthorization, async(req, res)=>{
+     try{
+          const user = req.user
+          if(user){
+               res.send()
+          }else{
+               res.status(404).send()
+          }
+     }catch(error){
+          console.log(error)
+          res.status(500).send()
+     }
 })
 
 router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
