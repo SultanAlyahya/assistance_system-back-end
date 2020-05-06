@@ -78,20 +78,6 @@ router.post('/User/notifications', userAuthorization, async(req, res)=>{
      }
 })
 
-router.get('/User/DeleteAccount', userAuthorization, async(req, res)=>{
-     try{
-          const user = req.user
-          const blind = await blindUser.findByIdAndDelete(user._id)
-          if(blind){
-               res.send()
-          }else{
-               res.status(404).send()
-          }
-     }catch(error){
-          res.status(500).send()
-     }
-})
-
 router.post('/User/Signup', async(req, res)=>{
      console.log('in')
      const isAvailable = await blindUser.isAvailable(req.body.email)

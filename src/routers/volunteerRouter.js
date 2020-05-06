@@ -94,6 +94,19 @@ router.post('/volunteer/joinRoom', volunteerAuthorization, async(req, res)=>{
 
 })
 
+router.get('/volunteer/DeleteAccount', volunteerAuthorization, async(req, res)=>{
+    try{
+        const Volunteer = req.Volunteer
+        const volunteer = await Volunteer.findByIdAndDelete(Volunteer._id)
+        if(volunteer){
+            res.send()
+        }else{
+            res.status(404).send()
+        }
+    }catch(error){
+        res.status(500).send()
+    }
+})
 
 router.post('/volunteer/Signup', async(req, res)=>{
     try{
