@@ -136,18 +136,14 @@ router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
           const user = req.user
           if(req.body.rate){
                const Volunteer = await volunteer.findById(user.volunteerID)
-               console.log(Volunteer)
                Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
                await Volunteer.save()
           }
-          const u=await blindUser.findByIdAndUpdate(user._id, {room:'', available:res, volunteerID:undefined},{"new": true})
-          console.log(u)
-          // const userObject = user.toObject()
-          // delete userObject.volunteerID
-
-          // userObject.room=''
-          // userObject.available=true
-          //await userObject.save()
+          //user.toObject()
+          user.volunteerID=undefined
+          user.room=''
+          user.available=true
+          await user.save()
           console.log(user)
           res.send()
      }catch(error){
