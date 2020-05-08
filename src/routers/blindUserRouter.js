@@ -134,18 +134,17 @@ router.get('/User/LoginByToken', userAuthorization, async(req, res)=>{
 router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
      try{
           const user = req.user
-          console.log(req.body.rate)
           if(req.body.rate){
-               const Volunteer = user.volunteerID
+               const Volunteer = await volunteer.findById(user.volunteerID)
                console.log(Volunteer)
                Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
                await Volunteer.save()
           }
-          user.toObject()
-          delete user.volunteerID
-          user.room=''
-          user.available=true
-          await user.save()
+          const userObject = user.toObject()
+          delete userObject.volunteerID
+          userObject.room=''
+          userObject.available=true
+          await userObject.save()
           console.log(user)
           res.send()
      }catch(error){
