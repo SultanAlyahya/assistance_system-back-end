@@ -134,8 +134,10 @@ router.get('/User/LoginByToken', userAuthorization, async(req, res)=>{
 router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
      try{
           const user = req.user
+          console.log(req.body.rate)
           if(req.body.rate){
                const Volunteer = user.volunteerID
+               console.log(Volunteer)
                Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
                await Volunteer.save()
           }
