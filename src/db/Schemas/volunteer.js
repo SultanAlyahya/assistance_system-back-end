@@ -100,7 +100,7 @@ volunteerSchema.methods.statistics=async function(){
         Volunteer.rating.forEach(rate => {
             rating+=rate.rate
         });
-        rating=rating/Volunteer.rating.length
+        rating=rating/(Volunteer.rating.length+1)
     }
     const numberOfVolunteers = await volunteer.countDocuments({})
     const numberOfActiveVolunteers = await volunteer.countDocuments({enableCalls:true})

@@ -20,7 +20,7 @@ admin.initializeApp({
 const router = express.Router()
 
 router.get('/notiTest', async(req, res)=>{
-     var registrationToken = 'd8zvREFQcg8:APA91bFpEmRIbCOhQmXOtF4erxh3RBditFPSZJDma36PEHuVIa6Vx1m-M2zOJgQ5U4PWOqyG1YtzkZV_OLNPhm4j3pW-_dwmFa_gVVHLJoB8jEAYd54QjD8F-0qQ9D3e9coIC9Nzq71l'
+     var registrationToken = 'fDYIUpBzRjc:APA91bEdPKfxmn--tHdEBv2PKT-weAYXyAibZv1OwonyTFTzsC3GF8T3dz97N2i347Dpqzf6hFzl3q7sJOBj93AMMy4W4K3aWNE1I9SqTaCAa6Ss58JXMU31zf6XLN0tIN5isBiAt9wl'
 
      var messages = [];
      messages.push({
@@ -135,7 +135,7 @@ router.post('/rateVolunteer', userAuthorization, async(req, res)=>{
      try{
           const user = req.user
           if(req.body.rate){
-               const Volunteer = await volunteer.findById(user.volunteerID)
+               const Volunteer = user.volunteerID
                Volunteer.rating = Volunteer.rating.concat({rate:req.body.rate,userID:user._id})
                await Volunteer.save()
           }
